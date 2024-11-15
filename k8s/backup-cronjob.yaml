@@ -1,0 +1,47 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgres-backup
+  namespace: bookstore
+spec:
+  schedule: "0 2 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: backup
+            image: postgres:15
+            command:
+            - /bin/bash
+            - -c
+            - |
+              pg_dump -h postgres -U postgres -d bookstore > /backup/backup-$(date +%Y%m%d).sql
+              gzip /backup/backup-$(date +%Y%m%d).sql
+              # Upload to cloud storage (example using AWS S3)
+              aws s3 cp /backup/backup-$(date +%Y%m%d).sql.gz s3://your-bucket/backups/
+            env:
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: bookstore-secret
+                  key: POSTGRES_PASSWORD
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secret
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secret
+                  key: AWS_SECRET_ACCESS_KEY
+            volumeMounts:
+            - name: backup
+              mountPath: /backup
+          restartPolicy: OnFailure
+          volumes:
+          - name: backup
+            emptyDir: {}

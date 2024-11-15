@@ -1,0 +1,85 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.env
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+*.sublime-workspace
+*.sublime-project
+
+# Coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Kubernetes secrets
+k8s/*secret*.yaml
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# Credentials and sensitive data
+.env
+.env.*
+*.pem
+credentials.json
+secret.json
+
+# Compiled files
+*.pyc
+*.pyo
+*.mo
+*.pot
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# System Files
+.DS_Store
+Thumbs.db
